@@ -3,10 +3,18 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
+    [SerializeField] float jumpPowor;
+    [SerializeField] int maxJumpCount = 2;
     float Playerspeed = 3.0f;
-    float Jumpspeed = 100.0f;
+    int junpCount = 0;
+    Rigidbody rb;
 
-     void Update()
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    void Update()
     {
         // ‘OˆÚ“®
         if (Input.GetKey(KeyCode.W))
@@ -29,10 +37,22 @@ public class Player : MonoBehaviour
             transform.position -= Playerspeed * transform.right * Time.deltaTime;
         }
         // ƒWƒƒƒ“ƒv
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && junpCount < maxJumpCount)
         {
-            transform.position += Jumpspeed * transform.up * Time.deltaTime;
-        }
+            Vector3 vel = rb.linearVelocity;
+            vel.y = 0f;
+            rb.linearVelocity = vel;
 
+            rb.AddForce(Vector3.up * jumpPowor, ForceMode.Impulse);
+            junpCount++;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            junpCount = 0;
+        }
     }
 }
