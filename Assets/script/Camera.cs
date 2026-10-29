@@ -6,7 +6,7 @@ public class Camera : MonoBehaviour
     [SerializeField] private float upDownRange = 60.0f;
     [SerializeField] Camera playerCamera;
 
-    private float verticalRotation = 0;
+    float verticalRotation = 0;
 
     private void Start()
     {

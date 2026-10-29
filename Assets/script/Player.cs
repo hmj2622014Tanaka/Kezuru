@@ -5,13 +5,17 @@ public class Player : MonoBehaviour
 
     [SerializeField] float jumpPowor;
     [SerializeField] int maxJumpCount = 2;
-    float Playerspeed = 3.0f;
+    [SerializeField] int maxHp = 10;
+
+    float Playerspeed = 5.0f;
     int junpCount = 0;
+    int currentHp;
     Rigidbody rb;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        currentHp = maxHp;
     }
 
     void Update()
@@ -54,5 +58,25 @@ public class Player : MonoBehaviour
         {
             junpCount = 0;
         }
+    }
+
+    // ダメージを受けた時
+    public void TakeDamage(int damage)
+    {
+        currentHp -= damage;
+        Debug.Log($"自分がが{damage}のダメージを受けた。残りのHP:{currentHp}");
+
+        // 体力が０になった時
+        if (currentHp <= 0)
+        {
+            Die();
+        }
+    }
+
+    // 倒されたとき
+    void Die()
+    {
+        Debug.Log("倒された!!");
+        Destroy(gameObject);    // 敵の削除
     }
 }
